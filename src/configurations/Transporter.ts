@@ -1,5 +1,5 @@
 import type { Format } from 'logform'
-import { format, transports } from 'winston'
+import { format } from 'winston'
 import DailyRotateFile from 'winston-daily-rotate-file'
 import LokiTransport from 'winston-loki'
 import TelegramTransport from 'winston-telegram'
@@ -9,6 +9,7 @@ import type {
 	TelegramTransportOptions
 } from '../interface/interfaces.js'
 import type { formatType } from '../interface/type.js'
+import ConsolaTransport from './ConsolaTransport.js'
 import { formatter } from './Formatter.js'
 
 const { combine, timestamp, prettyPrint, errors } = format
@@ -57,7 +58,8 @@ class Transporter {
 	consoleTransporter(type: formatType = 'detailed', customFormat?: Format) {
 		let consoleFormat = formatter.getFormatType(type || 'detailed')
 
-		return new transports.Console({
+		return new ConsolaTransport({
+			rawOutput: type === 'json',
 			format: combine(
 				...(type !== 'json' ? [format.colorize({ all: true })] : []),
 				timestamp({ format: this.dateFormat }),

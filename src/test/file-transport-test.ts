@@ -3,6 +3,7 @@ import { createLogger } from '../index.js'
 const logger = createLogger({
 	serviceName: 'default-service',
 	transports: {
+		console: { type: 'json' },
 		fileRotate: {
 			maxSize: '20m',
 			maxFiles: '1d',
